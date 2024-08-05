@@ -9,7 +9,7 @@ const invoiceSchema = new Schema({
   // TODO
 });
 
-invoiceSchema.statics.adInvoice = async function (invoiceData) {
+invoiceSchema.statics.addInvoice = async function (invoiceData) {
   const invoice = new this(invoiceData);
   await invoice.save();
 
