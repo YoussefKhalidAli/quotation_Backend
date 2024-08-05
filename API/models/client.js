@@ -43,31 +43,30 @@ const clientSchema = new Schema({
     required: true,
   },
   invoices: {
-    type: [String],
+    type: [{ type: Schema.Types.ObjectId, required: true, ref: "Invoice" }],
     required: true,
   },
   services: {
-    type: [String],
+    type: [{ type: Schema.Types.ObjectId, required: true, ref: "Service" }],
     required: true,
   },
   proposals: {
-    type: [{ type: Schema.Types.ObjectId, required: true }],
-    ref: "Proposal",
+    type: [{ type: Schema.Types.ObjectId, required: true, ref: "Proposal" }],
     required: true,
   },
   quotes: {
-    type: [{ type: Schema.Types.ObjectId, required: true }],
-    ref: "Quote",
+    type: [{ type: Schema.Types.ObjectId, required: true, ref: "Quote" }],
     required: true,
   },
   agreements: {
-    type: [{ type: Schema.Types.ObjectId, required: true }],
-    ref: "Agreement",
+    type: [{ type: Schema.Types.ObjectId, required: true, ref: "Agreement" }],
     required: true,
   },
   feedback: {
-    type: [{ type: Schema.Types.ObjectId, required: true }],
-    ref: "Feedback",
+    type: [{ type: Schema.Types.ObjectId, required: true, ref: "Feedback" }],
+  },
+  payments: {
+    type: [{ type: Schema.Types.ObjectId, required: true, ref: "Payment" }],
   },
 });
 

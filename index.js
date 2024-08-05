@@ -11,7 +11,9 @@ connectdb();
 
 app.use(express.json({ extended: false }));
 
-app.use("/manage", require("./API/routes/manage"));
+app.use("/client", require("./API/routes/client"));
+app.use("/feedback", require("./API/routes/feedback"));
+app.use("/user", require("./API/routes/user"));
 
 const PORT = process.env.REACT_APP_PORT || 4000;
 

@@ -6,6 +6,7 @@ const proposalSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
   },
+  // TODO
 });
 
 proposalSchema.statics.addProposal = async function (proposalData) {

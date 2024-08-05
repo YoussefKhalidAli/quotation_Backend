@@ -2,11 +2,13 @@ const express = require("express");
 const router = express.Router();
 
 const upload = require("../middleWare/multer");
+const auth = require("../middleWare/auth");
+
 const Client = require("../models/client");
 const Feedback = require("../models/feedback");
 const Agreement = require("../models/agreement");
 
-router.post("/client", upload.single("logo"), async (req, res) => {
+router.post("/client", [auth, upload.single("logo")], async (req, res) => {
   try {
     const {
       name,
@@ -46,7 +48,7 @@ router.post("/client", upload.single("logo"), async (req, res) => {
   }
 });
 
-router.put("/client/:clientId", async (req, res) => {
+router.put("/client/:clientId", auth, async (req, res) => {
   try {
     const { clientId } = req.params;
     const { field, value } = req.body;
@@ -87,7 +89,7 @@ router.post("/feedback", async (req, res) => {
 
 module.exports = router;
 
-router.post("/agreement", async (req, res) => {
+router.post("/agreement", auth, async (req, res) => {
   try {
     const {
       number,
