@@ -22,7 +22,7 @@ const paymentSchema = new Schema(
   }
 );
 
-paymentShema.statics.addPayment = async function (paymentData) {
+paymentSchema.statics.addPayment = async function (paymentData) {
   const payment = new this(paymentData);
   await payment.save();
 

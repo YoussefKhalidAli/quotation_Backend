@@ -1,6 +1,12 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const Agreement = require("../models/agreement");
+const Payment = require("../models/payment");
+const Feedback = require("../models/feedback");
+const Invoice = require("../models/invoice");
+const Proposal = require("../models/proposal");
+
 const clientSchema = new Schema({
   name: {
     type: String,
@@ -38,10 +44,6 @@ const clientSchema = new Schema({
     unique: true,
     match: [/.+\@.+\..+/, "Please fill a valid email address"],
   },
-  payments: {
-    type: [String],
-    required: true,
-  },
   invoices: {
     type: [{ type: Schema.Types.ObjectId, required: true, ref: "Invoice" }],
     required: true,
@@ -52,10 +54,6 @@ const clientSchema = new Schema({
   },
   proposals: {
     type: [{ type: Schema.Types.ObjectId, required: true, ref: "Proposal" }],
-    required: true,
-  },
-  quotes: {
-    type: [{ type: Schema.Types.ObjectId, required: true, ref: "Quote" }],
     required: true,
   },
   agreements: {
@@ -77,5 +75,17 @@ clientSchema.index(
     partialFilterExpression: { businessEmail: { $exists: true, $ne: null } },
   }
 );
+
+clientSchema.statics.removeDependents = async function (clientId) {
+  try {
+    await Agreement.deleteMany({ client: clientId });
+    await Feedback.deleteMany({ client: clientId });
+    await Invoice.deleteMany({ client: clientId });
+    await Proposal.deleteMany({ client: clientId });
+    await Payment.deleteMany({ client: clientId });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 module.exports = mongoose.model("Client", clientSchema);

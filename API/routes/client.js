@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
+const auth = require("../middleWare/auth");
 const upload = require("../middleWare/multer");
+
 const Client = require("../models/client");
 
-router.post("/", upload.single("logo"), async (req, res) => {
+router.post("/", auth, upload.single("logo"), async (req, res) => {
   try {
     const {
       name,
@@ -39,12 +41,11 @@ router.post("/", upload.single("logo"), async (req, res) => {
 
     res.status(200).json("Saved successfully");
   } catch (err) {
-    console.log(err.message);
     res.status(500).json(err.message);
   }
 });
 
-router.put("/:clientId", async (req, res) => {
+router.put("/:clientId", auth, async (req, res) => {
   try {
     const { clientId } = req.params;
     const { value } = req.body;
@@ -59,14 +60,20 @@ router.put("/:clientId", async (req, res) => {
 
     res.status(200).json(client);
   } catch (e) {
-    console.error(e.message);
     res.status(500).json({ message: e.message });
   }
 });
 
 router.delete("/:clientId", auth, async (req, res) => {
   try {
-    Client.deleteOne({ _id: req.params.clientId });
+    const clientId = req.params.clientId;
+
+    const client = await Client.findOne({ _id: clientId });
+
+    if (client) {
+      await Client.removeDependents(clientId);
+      await Client.deleteOne({ _id: clientId });
+    }
 
     res.json("success");
   } catch (err) {

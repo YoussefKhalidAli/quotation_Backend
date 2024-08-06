@@ -6,6 +6,8 @@ const bcrypt = require("bcryptjs");
 
 const genToken = require("../../getToken");
 
+const auth = require("../middleWare/auth");
+
 const User = require("../models/user");
 
 // register an account

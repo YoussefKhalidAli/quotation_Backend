@@ -39,7 +39,7 @@ const agreementSchema = new Schema(
       type: dateSchema,
       required: true,
     },
-    customer: {
+    client: {
       type: Schema.Types.ObjectId,
       ref: "Client",
       required: true,

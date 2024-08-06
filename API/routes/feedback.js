@@ -12,7 +12,6 @@ router.post("/", async (req, res) => {
 
     res.status(200).json("Saved successfully");
   } catch (err) {
-    console.log(err.message);
     res.status(500).json(err.message);
   }
 });
